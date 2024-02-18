@@ -1,12 +1,11 @@
-#include <Ultrasonic.h>
-
-Ultrasonic ultrasonic(12, 13); // (Trig pin, Echo pin)
-int ledR = 9; // LED Rojo
-int ledA = 10; // LED Amarillo
-int ledV = 11; // LED Verde
+int pinPIR = 3; // Asumiendo que el sensor PIR está conectado al pin digital 2
+int ledR = 8; // LED Rojo
+int ledA = 12; // LED Amarillo
+int ledV = 13; // LED Verde
 
 void setup() {
   Serial.begin(9600);
+  pinMode(pinPIR, INPUT);
   pinMode(ledR, OUTPUT);
   pinMode(ledA, OUTPUT);
   pinMode(ledV, OUTPUT);
@@ -18,18 +17,16 @@ void loop() {
     controlLEDs(command);
   }
 
-  long distance = ultrasonic.distanceRead(CM);
-  Serial.println(distance);
-  delay(1000);
+  int movimiento = digitalRead(pinPIR);
+  Serial.println(movimiento); // Enviar el estado del sensor PIR a Python
+  delay(1000); // Espera para evitar múltiples detecciones rápidas
 }
 
 void controlLEDs(char command) {
-  // Apagar todos los LEDs primero
   digitalWrite(ledR, LOW);
   digitalWrite(ledA, LOW);
   digitalWrite(ledV, LOW);
   
-  // Encender el LED basado en el comando recibido
   switch (command) {
     case 'R':
       digitalWrite(ledR, HIGH);
@@ -39,9 +36,6 @@ void controlLEDs(char command) {
       break;
     case 'V':
       digitalWrite(ledV, HIGH);
-      break;
-    default:
-      // Si se recibe otro carácter, no hacer nada o apagar todos los LEDs
       break;
   }
 }

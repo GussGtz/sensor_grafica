@@ -18,29 +18,26 @@ except mysql.connector.Error as err:
     exit(1)
 
 # Abrir conexión serial
-arduino = serial.Serial('/dev/cu.usbmodem1444201', 9600, timeout=1)  # Ajusta esto al puerto correcto
+arduino = serial.Serial('/dev/cu.usbserial-1410', 9600, timeout=1)
 
 try:
     while True:
         data = arduino.readline().decode().strip()  # Leer y decodificar datos del Arduino
         if data:
-            distancia = int(data)  # Convertir la distancia a entero
-            # Determinar el color del LED basado en la distancia
-            if distancia < 10:
+            movimiento = int(data)  # Convertir el estado del sensor PIR a entero (0 o 1)
+            if movimiento == 1:
                 led_color = 'rojo'
                 arduino.write(b'R')  # Enviar comando para LED Rojo
-            elif distancia < 20:
-                led_color = 'amarillo'
-                arduino.write(b'A')  # Enviar comando para LED Amarillo
             else:
                 led_color = 'verde'
                 arduino.write(b'V')  # Enviar comando para LED Verde
             
             # Preparar sentencia SQL para insertar los datos incluyendo el color del LED
-            sql = "INSERT INTO tb_puerto_serial (mensaje, led_color) VALUES (%s, %s)"
-            cursor.execute(sql, (data, led_color))
-            db.commit()
-            print(f"Distancia: {data} cm, LED: {led_color}")
+            #sql = "INSERT INTO tb_puerto_serial (movimiento, led_color) VALUES (%s, %s)"
+            #cursor.execute(sql, (movimiento, led_color))
+           # db.commit()
+            estado_mov = "Detectado" if movimiento == 1 else "No detectado"
+            print(f"Movimiento: {estado_mov}, LED: {led_color}")
             
 except KeyboardInterrupt:
     print("Programa terminado por el usuario")
