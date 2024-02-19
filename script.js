@@ -4,22 +4,19 @@ $(document).ready(function () {
         type: "line",
         data: {
             labels: [], // Las etiquetas de tiempo
-            datasets: [
-                {
-                    label: "Detección de Movimiento",
-                    backgroundColor: "rgb(255, 99, 132)",
-                    borderColor: "rgb(255, 99, 132)",
-                    data: [], // Los datos de detección de movimiento
-                    fill: false,
-                },
-            ],
+            datasets: [{
+                label: "Detección de Movimiento",
+                backgroundColor: "rgb(255, 99, 132)",
+                borderColor: "rgb(255, 99, 132)",
+                data: [], // Los datos de detección de movimiento
+                fill: false,
+            }],
         },
         options: {
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        // Asegura que la escala y muestre valores enteros
                         stepSize: 1,
                         suggestedMax: 1,
                     }
@@ -32,49 +29,36 @@ $(document).ready(function () {
         $.ajax({
             url: "conexion.php",
             type: "GET",
-            dataType: "json", // Asegúrate de que jQuery espera JSON
-            success: function (data) {
-                // No hay necesidad de JSON.parse si el dataType es json
-                var labels = [];
-                var sensorData = [];
-
-                data.forEach(function (row) {
-                    labels.push(row.hora);
-                    sensorData.push(row.dato_sensor);
-                });
-
+            dataType: "json",
+            success: function (data) { // 'data' aquí es la respuesta de tu petición AJAX
+                var labels = data.map(row => row.hora);
+                var sensorData = data.map(row => row.dato_sensor);
+    
                 chart.data.labels = labels;
                 chart.data.datasets[0].data = sensorData;
                 chart.update();
-
-                // Actualización de LEDs
-                updateLEDs(data);
+    
+                updateLEDs(data); // Pasar 'data' directamente a la función updateLEDs
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // Maneja errores aquí
                 console.error('Error fetching data: ', textStatus, errorThrown);
             }
         });
     }
+    
 
     function updateLEDs(data) {
         var led1 = document.getElementById("led1");
         var led3 = document.getElementById("led3");
-
-        if (data.length > 0) {
-            var lastColor = data[0].color_led;
-
-            if (lastColor === "azul") {
-                led1.src = "img/AMARILLO-OFF.svg";
-                led3.src = "img/VERDE-ON.svg";
-            } else if (lastColor === "rojo") {
-                led1.src = "img/AMARILLO-ON.svg";
-                led3.src = "img/VERDE-OFF.svg";
-            }
+        
+        if (data && data.length > 0) {
+            var lastColor = data[data.length - 1].color_led; // Tomamos el último registro para determinar el color
+            
+            led1.src = lastColor === "azul" ? "img/VERDE-ON.svg" : "img/VERDE-OFF.svg";
+            led3.src = lastColor === "rojo" ? "img/ROJO-ON.svg" : "img/ROJO-OFF.svg";
         }
     }
 
-    setInterval(function () {
-        fetchData();
-    }, 5000); // Ajustado a 5 segundos para reducir la carga en el servidor
+    // Invoca fetchData cada 5 segundos para obtener y procesar datos nuevos
+    setInterval(fetchData, 5000);
 });
