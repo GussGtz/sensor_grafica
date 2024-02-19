@@ -35,48 +35,44 @@ $(document).ready(function () {
             dataType: "json", // Asegúrate de que jQuery espera JSON
             success: function (data) {
                 // No hay necesidad de JSON.parse si el dataType es json
-                var parsedData = data; // jQuery ya analiza la respuesta JSON automáticamente
-        
                 var labels = [];
                 var sensorData = [];
-        
-                parsedData.forEach(function (row) {
+
+                data.forEach(function (row) {
                     labels.push(row.hora);
                     sensorData.push(row.dato_sensor);
                 });
-        
+
                 chart.data.labels = labels;
                 chart.data.datasets[0].data = sensorData;
                 chart.update();
+
+                // Actualización de LEDs
+                updateLEDs(data);
             },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    // Maneja errores aquí
-                    console.error('Error fetching data: ', textStatus, errorThrown);
-                }
-            });
-
-                var led1 = document.getElementById("led1");
-                var led2 = document.getElementById("led2");
-                var led3 = document.getElementById("led3");
-
-                var lastColor = parsedData[0].led_color;
-
-                if (lastColor === "rojo") {
-                    led1.src = "img/VERDE-OFF.svg";
-                    led2.src = "img/AMARILLO-OFF.svg";
-                    led3.src = "img/ROJO-ON.svg";
-                } else if (lastColor === "amarillo") {
-                    led1.src = "img/VERDE-OFF.svg";
-                    led2.src = "img/AMARILLO-ON.svg";
-                    led3.src = "img/ROJO-OFF.svg";
-                } else if (lastColor === "verde") {
-                    led1.src = "img/VERDE-ON.svg";
-                    led2.src = "img/AMARILLO-OFF.svg";
-                    led3.src = "img/ROJO-OFF.svg";
-                }
+            error: function (jqXHR, textStatus, errorThrown) {
+                // Maneja errores aquí
+                console.error('Error fetching data: ', textStatus, errorThrown);
             }
-       
-    
+        });
+    }
+
+    function updateLEDs(data) {
+        var led1 = document.getElementById("led1");
+        var led3 = document.getElementById("led3");
+
+        if (data.length > 0) {
+            var lastColor = data[0].color_led;
+
+            if (lastColor === "azul") {
+                led1.src = "img/AMARILLO-OFF.svg";
+                led3.src = "img/VERDE-ON.svg";
+            } else if (lastColor === "rojo") {
+                led1.src = "img/AMARILLO-ON.svg";
+                led3.src = "img/VERDE-OFF.svg";
+            }
+        }
+    }
 
     setInterval(function () {
         fetchData();

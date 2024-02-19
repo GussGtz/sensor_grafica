@@ -1,7 +1,7 @@
 int pinPIR = 3; // Asumiendo que el sensor PIR está conectado al pin digital 2
-int ledR = 8; // LED Rojo
-int ledA = 12; // LED Amarillo
-int ledV = 13; // LED Verde
+int ledR = 8; // LED azul
+int ledA = 12; // LED sin uso
+int ledV = 13; // LED rojo
 
 void setup() {
   Serial.begin(9600);

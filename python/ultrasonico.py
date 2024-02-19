@@ -25,17 +25,17 @@ try:
         data = arduino.readline().decode().strip()  # Leer y decodificar datos del Arduino
         if data:
             movimiento = int(data)  # Convertir el estado del sensor PIR a entero (0 o 1)
+            dato_sensor = movimiento  # Asumiendo que dato_sensor es el movimiento detectado
             if movimiento == 1:
-                led_color = 'rojo'
+                led_color = 'azul'
                 arduino.write(b'R')  # Enviar comando para LED Rojo
             else:
-                led_color = 'verde'
+                led_color = 'rojo'
                 arduino.write(b'V')  # Enviar comando para LED Verde
-            
-            # Preparar sentencia SQL para insertar los datos incluyendo el color del LED
-            #sql = "INSERT INTO tb_puerto_serial (movimiento, led_color) VALUES (%s, %s)"
-            #cursor.execute(sql, (movimiento, led_color))
-           # db.commit()
+
+            sql = "INSERT INTO detecciones (mensaje, dato_sensor, color_led, hora) VALUES (%s, %s, %s, NOW())"
+            cursor.execute(sql, (data, dato_sensor, led_color))
+            db.commit()  # Corregir la indentación
             estado_mov = "Detectado" if movimiento == 1 else "No detectado"
             print(f"Movimiento: {estado_mov}, LED: {led_color}")
             
