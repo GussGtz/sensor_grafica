@@ -1,14 +1,14 @@
 <?php
 $host = 'localhost';
-$dbname = 'sm52_arduino';
+$dbname = 'arduino';
 $username = 'root';
-$password = 'root';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT mensaje, dato_sensor, hora, color_led FROM detecciones ORDER BY hora DESC LIMIT 100";
+    $sql = "SELECT mensaje, dato_sensor, hora, color_led FROM detecciones ORDER BY id DESC LIMIT 100";
     $stmt = $pdo->query($sql);
 
     $data = [];

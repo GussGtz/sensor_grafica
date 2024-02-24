@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -8,15 +9,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-      .canvas-container canvas {
-        max-width: 100%;
-        height: auto;
-      }
-      .card {
-        margin: 10px 0;
-      }
+        .canvas-container canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .card {
+            margin: 10px 0;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <!-- Aquí puede ir la barra de navegación si la necesitas -->
@@ -26,23 +29,22 @@
             <h1>Dashboard de Estado del Sensor PIR y LEDs</h1>
             <div class="row">
                 <!-- Estado de los LEDs basado en la última lectura del sensor -->
+                <!-- Estado de los LEDs basado en la última lectura del sensor -->
                 <div class="col-md-6">
                     <!-- Tarjeta para el estado actual de los LEDs -->
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title text-center">Estado Actual de LEDs</h4>
+                            <h4 class="card-title text-center">Estado Actual del Huevo</h4>
                             <div class="row">
-                                <!-- Imágenes de LEDs que cambiarán de estado dinámicamente -->
-                                <div class="col-4 text-center">
-                                    <img src="img/VERDE-OFF.svg" alt="LED Verde Apagado" class="img-fluid" id="led1">
+                                <!-- Imágenes del huevo que cambiarán de estado dinámicamente -->
+                                <div class="col-6 text-center">
+                                    <img src="img/huevo.jpg" alt="Huevo Cerrado" class="img-fluid" id="huevoImg">
                                 </div>
-                                <div class="col-4 text-center">
-                                    <img src="img/ROJO-OFF.svg" alt="LED Rojo Apagado" class="img-fluid" id="led3">
-                                </div>                            
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Gráfica de los datos del sensor PIR -->
                 <div class="col-md-6">
@@ -53,14 +55,29 @@
                         </div>
                     </div>
                 </div>
-            </div>        
+            </div>
         </div>
+        <!-- Agrega un segundo canvas para la nueva gráfica -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body canvas-container">
+            <h4 class="card-title">Mensajes del Sensor Ultrasónico</h4>
+            <canvas id="mensajesUltrasonicos"></canvas>
+        </div>
+    </div>
+</div>
+
     </main>
     <footer>
         <!-- Aquí puede ir el pie de página si lo necesitas -->
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
